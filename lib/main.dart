@@ -1,3 +1,5 @@
+// ignore_for_file: use_key_in_widget_constructors, prefer_const_constructors
+
 import 'package:expense_planner_app/Transactions.dart';
 import 'package:flutter/material.dart';
 
@@ -5,18 +7,17 @@ void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
 //  const MyApp({Key? key}) : super(key: key);
-  
 
   @override
   Widget build(BuildContext context) {
-     List<Transactions> transaction = [
-    Transactions(
-        id: 01, amount: 79.99, time: DateTime.now(), title: 'new T-shirt'),
-        Transactions(
-        id: 02, amount: 59.99, time: DateTime.now(), title: 'new shorts'),
-        Transactions(
-        id: 01, amount: 39.99, time: DateTime.now(), title: 'new underwear')
-  ];
+    List<Transactions> transaction = [
+      Transactions(
+          id: 01, amount: 79.99, time: DateTime.now(), title: 'T-shirt'),
+      Transactions(
+          id: 02, amount: 59.99, time: DateTime.now(), title: 'Shorts'),
+      Transactions(
+          id: 01, amount: 39.99, time: DateTime.now(), title: 'Underwear')
+    ];
     return MaterialApp(
         home: Scaffold(
       appBar: AppBar(title: const Text('Expense Planner App')),
@@ -32,35 +33,57 @@ class MyApp extends StatelessWidget {
               // height: 100,
               color: Colors.amberAccent,
               alignment: Alignment.centerLeft,
-              // ignore: prefer_const_constructors
+              
               child: Card(
-                color: Colors.black,
+              //  color: Colors.black,
                 elevation: 100,
-                // ignore: prefer_const_constructors
+                
                 child: Text(
                   'Container in the Column',
-                  // ignore: prefer_const_constructors
-                  style: TextStyle(color: Colors.white),
+                  
+                  style: TextStyle(color: Colors.black),
                 ),
               ),
             ),
-            // ignore: prefer_const_constructors
             SizedBox(
               height: 25,
             ),
-            Column(children: transaction.map((e) => Row(
-              children: [
-                Card(child: Text(e.amount.toString())),
-                Column(
-                  children: [
-                    Card(child: Text(e.title)),
-                    Card(child: Text(e.time.toString())),
-                  ],
-                ),
-              ],
-            )).toList(),)
-            
-         ] ),
+            Column(
+              children: transaction
+                  .map((e) => Card(
+                          child: Row(
+                        children: [
+                          Container(
+                            decoration: BoxDecoration(
+                                shape: BoxShape.rectangle,
+                                border: Border.all(
+                                    width: 2, color: Colors.deepPurple)),
+                            padding: EdgeInsets.all(20),
+                            margin: EdgeInsets.all(10),
+                            child: Text(
+                              e.amount.toString(),
+                              style: TextStyle(color: Colors.deepPurple),
+                            ),
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                e.title,
+                                style: TextStyle(
+                                    fontSize: 20, fontWeight: FontWeight.bold),
+                              ),
+                              Text(
+                                e.time.toString(),
+                                style: TextStyle(color: Colors.grey),
+                              ),
+                            ],
+                          ),
+                        ],
+                      )))
+                  .toList(),
+            )
+          ]),
     ));
   }
 }

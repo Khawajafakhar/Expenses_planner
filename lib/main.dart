@@ -16,10 +16,12 @@ class MyApp extends StatelessWidget {
     //var amount;
 
     return MaterialApp(
-        home: Scaffold(
-      appBar: AppBar(title: const Text('Expense Planner App')),
-      body: SingleChildScrollView(
-        child: Column(
+      home: Scaffold(
+        appBar: AppBar(
+            title: const Text('Expense Planner App'),
+            actions: [IconButton(onPressed: (){}, icon: Icon(Icons.add))]),
+        body: SingleChildScrollView(
+          child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -46,9 +48,12 @@ class MyApp extends StatelessWidget {
                   height: 25,
                 ),
                 UserTransaction()
-               
               ]),
-      ),
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+        floatingActionButton: FloatingActionButton(onPressed: () {
+          
+        },child: Icon(Icons.add)),
       ),
     );
   }

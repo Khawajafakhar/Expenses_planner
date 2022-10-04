@@ -8,6 +8,16 @@ import 'user_transaction.dart';
 class NewTransactions extends StatelessWidget {
   final Function addfx;
   NewTransactions(this.addfx);
+  void onSubmitted(){
+    final String titlein= titleinput.text;
+    final double amountin=  double.parse(amountinput.text);
+
+    if(titlein.isEmpty || amountin<=0){
+      return;
+    }
+
+    addfx(titlein,amountin);
+  }
   final titleinput = TextEditingController();
   final amountinput = TextEditingController();
   @override
@@ -22,6 +32,7 @@ class NewTransactions extends StatelessWidget {
             //onChanged: (text){
             //title=text;1
             controller: titleinput,
+            onSubmitted:  (val) => onSubmitted(),
           ),
           TextField(
             decoration: InputDecoration(
@@ -29,6 +40,8 @@ class NewTransactions extends StatelessWidget {
             //onChanged: (text){
             //amount=text;}
             controller: amountinput,
+            onSubmitted: (val) => onSubmitted(),
+            keyboardType: TextInputType.number,
           ),
           Container(
             margin: EdgeInsets.only(top: 10),
@@ -40,7 +53,7 @@ class NewTransactions extends StatelessWidget {
                         backgroundColor:
                             MaterialStateProperty.all(Colors.white)),
                     onPressed: () {
-                      addfx( titleinput.text,double.tryParse(amountinput.text));
+                      onSubmitted;
                     },
                     child: Text(
                       'Add new Transaction',

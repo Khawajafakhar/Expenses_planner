@@ -1,7 +1,9 @@
 
 
+import 'dart:ffi';
+
 class Transactions{
-int id;
+DateTime id ;
 String title;
 double amount;
 DateTime time;

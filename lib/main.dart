@@ -20,35 +20,36 @@ class MyApp extends StatelessWidget {
       appBar: AppBar(title: const Text('Expense Planner App')),
       body: SingleChildScrollView(
         child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(
-                height: 20,
-              ),
-              Container(
-                width: double.infinity,
-                // height: 100,
-                color: Colors.amberAccent,
-                alignment: Alignment.centerLeft,
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(
+                  height: 20,
+                ),
+                Container(
+                  width: double.infinity,
+                  // height: 100,
+                  color: Colors.amberAccent,
+                  alignment: Alignment.centerLeft,
 
-                child: Card(
-                  //  color: Colors.black,
-                  elevation: 100,
+                  child: Card(
+                    //  color: Colors.black,
+                    elevation: 100,
 
-                  child: Text(
-                    'Container in the Column',
-                    style: TextStyle(color: Colors.black),
+                    child: Text(
+                      'Container in the Column',
+                      style: TextStyle(color: Colors.black),
+                    ),
                   ),
                 ),
-              ),
-              SizedBox(
-                height: 25,
-              ),
-              UserTransaction()
-             
-            ]),
+                SizedBox(
+                  height: 25,
+                ),
+                UserTransaction()
+               
+              ]),
       ),
-    ));
+      ),
+    );
   }
 }

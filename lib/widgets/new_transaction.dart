@@ -1,14 +1,22 @@
 // ignore: file_names
 // ignore_for_file: prefer_const_constructors
 
-import 'package:expense_planner_app/widgets/user_transaction.dart';
-import 'package:flutter/material.dart';
-import 'user_transaction.dart';
+//import 'package:expense_planner_app/widgets/user_transaction.dart';
+//import 'dart:html';
 
-class NewTransactions extends StatelessWidget {
+import 'package:flutter/material.dart';
+//import 'user_transaction.dart';
+
+class NewTransactions extends StatefulWidget {
   final Function addfx;
   NewTransactions(this.addfx);
-  void onSubmitted(){
+
+  @override
+  State<NewTransactions> createState() => _NewTransactionsState();
+}
+
+class _NewTransactionsState extends State<NewTransactions> {
+  void onbtnSubmitted(){
     final String titlein= titleinput.text;
     final double amountin=  double.parse(amountinput.text);
 
@@ -16,10 +24,17 @@ class NewTransactions extends StatelessWidget {
       return;
     }
 
-    addfx(titlein,amountin);
+    widget.addfx(titlein,amountin);
+
+   // Navigator.of(context).pop();
   }
+  
+
+
   final titleinput = TextEditingController();
+
   final amountinput = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -32,7 +47,7 @@ class NewTransactions extends StatelessWidget {
             //onChanged: (text){
             //title=text;1
             controller: titleinput,
-            onSubmitted:  (val) => onSubmitted(),
+            onSubmitted:  (val) => onbtnSubmitted(),
           ),
           TextField(
             decoration: InputDecoration(
@@ -40,7 +55,7 @@ class NewTransactions extends StatelessWidget {
             //onChanged: (text){
             //amount=text;}
             controller: amountinput,
-            onSubmitted: (val) => onSubmitted(),
+            onSubmitted: (val) => onbtnSubmitted(),
             keyboardType: TextInputType.number,
           ),
           Container(
@@ -53,11 +68,12 @@ class NewTransactions extends StatelessWidget {
                         backgroundColor:
                             MaterialStateProperty.all(Colors.white)),
                     onPressed: () {
-                      onSubmitted;
+                      print('button pressed');
+                      onbtnSubmitted();
                     },
                     child: Text(
                       'Add new Transaction',
-                      style: TextStyle(color: Colors.deepPurple),
+                      style: TextStyle(color: Theme.of(context).primaryColor),
                     )),
               ],
             ),

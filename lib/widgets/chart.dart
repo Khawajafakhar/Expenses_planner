@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../models/Transactions.dart';
+import 'chart_bar.dart';
 
 class Chart extends StatelessWidget {
   final List<Transactions> _transactionslist;
   // const Chart({ Key? key }) : super(key: key);
   const Chart(this._transactionslist);
-  List<Map<String, Object>> get groupedTransactionValues {
+  List<Map<String, dynamic>> get groupedTransactionValues {
     return List.generate(7, (index) {
       final weekday = DateTime.now().subtract(Duration(days: index));
       var totalsum = 0.0;
@@ -21,14 +22,32 @@ class Chart extends StatelessWidget {
       // print(DateFormat.E().format(weekday).toString());
       // print(totalsum);
 
-      return {'day': DateFormat.E().format(weekday), 'amout': totalsum};
+      return {
+        'day': DateFormat.E().format(weekday).substring(0, 1),
+        'amount': totalsum
+      };
+    });
+  }
+
+  double get weeklySpending {
+    return groupedTransactionValues.fold(0.0, (previousValue, element) {
+      return previousValue += (element['amount'] as double);
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: Row(children: []),
+    return Card(margin: EdgeInsets.all(10),
+      elevation: 10,
+      child: Padding(
+        padding: EdgeInsets.all(10),
+        child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: groupedTransactionValues.map<Widget>((e) {
+              return ChartBar(
+                  e['day'], e['amount'], e['amount'] / weeklySpending);
+            }).toList()),
+      ),
     );
   }
 }

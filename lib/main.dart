@@ -62,17 +62,18 @@ class _MyAppState extends State<MyApp> {
       theme: ThemeData(
           textTheme: TextTheme(
               headline6: TextStyle(
-                  fontFamily: 'OpenSans',
+                  color: Colors.white 
+                
                  // fontSize: 10,
                   
-                  )),
+                  ),headline1: TextStyle(color: Colors.black)),
           brightness: Brightness.light,
           primarySwatch: Colors.cyan,
           floatingActionButtonTheme: FloatingActionButtonThemeData(
               elevation: 10, backgroundColor: Color.fromRGBO(139, 0, 139, 1)),
           appBarTheme: AppBarTheme(
             titleTextStyle: TextStyle(
-                fontFamily: 'Quicksand',
+                color: Colors.white,
                 fontSize: 20,
                 fontWeight: FontWeight.bold),
           )),

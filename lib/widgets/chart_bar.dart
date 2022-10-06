@@ -13,7 +13,7 @@ class ChartBar extends StatelessWidget {
       fit: FlexFit.tight,
       child: Column(
         children: [
-          FittedBox(child: Text('\$${spendingAmount.toStringAsFixed(0)}')),
+          Container(height: 20,child: FittedBox(child: Text('\$${spendingAmount.toStringAsFixed(0)}'))),
           const SizedBox(
             height: 5,
           ),

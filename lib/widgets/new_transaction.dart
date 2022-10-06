@@ -5,10 +5,12 @@
 //import 'dart:html';
 
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 //import 'user_transaction.dart';
 
 class NewTransactions extends StatefulWidget {
   final Function addfx;
+  
   NewTransactions(this.addfx);
 
   @override
@@ -16,20 +18,34 @@ class NewTransactions extends StatefulWidget {
 }
 
 class _NewTransactionsState extends State<NewTransactions> {
-  void onbtnSubmitted(){
-    final String titlein= titleinput.text;
-    final double amountin=  double.parse(amountinput.text);
+  DateTime? _selectedDate;
+  void onbtnSubmitted() {
+    final String titlein = titleinput.text;
+    final double amountin = double.parse(amountinput.text);
 
-    if(titlein.isEmpty || amountin<=0){
+    if (titlein.isEmpty || amountin <= 0) {
       return;
     }
 
-    widget.addfx(titlein,amountin);
+    widget.addfx(titlein, amountin);
 
-   // Navigator.of(context).pop();
+    // Navigator.of(context).pop();
   }
-  
 
+  void _presentdatepicker() {
+    showDatePicker(context: context,
+        initialDate: DateTime.now(),
+        firstDate: DateTime(2022),
+        lastDate: DateTime.now()).then((value) {
+          if(value != null) {
+            setState(() {
+            _selectedDate = value;
+              
+            });
+          }
+        
+        });
+  }
 
   final titleinput = TextEditingController();
 
@@ -47,7 +63,7 @@ class _NewTransactionsState extends State<NewTransactions> {
             //onChanged: (text){
             //title=text;1
             controller: titleinput,
-            onSubmitted:  (val) => onbtnSubmitted(),
+            onSubmitted: (val) => onbtnSubmitted(),
           ),
           TextField(
             decoration: InputDecoration(
@@ -58,6 +74,24 @@ class _NewTransactionsState extends State<NewTransactions> {
             onSubmitted: (val) => onbtnSubmitted(),
             keyboardType: TextInputType.number,
           ),
+          Padding(
+            padding: EdgeInsets.only(top: 20),
+            child: Row(
+              // ignore: prefer_const_literals_to_create_immutables
+              children: [
+                Padding(
+                    padding: EdgeInsets.only(left: 10),
+                    child:
+                        Text(_selectedDate!= null ? DateFormat.yMd().format(_selectedDate!) : 'No Date!', style: TextStyle(color: Colors.grey))),
+                TextButton(
+                    onPressed: _presentdatepicker,
+                    child: Text(
+                      'Choose Date',
+                      style: TextStyle(color: Theme.of(context).primaryColor),
+                    ))
+              ],
+            ),
+          ),
           Container(
             margin: EdgeInsets.only(top: 10),
             child: Row(
@@ -65,15 +99,15 @@ class _NewTransactionsState extends State<NewTransactions> {
               children: [
                 ElevatedButton(
                     style: ButtonStyle(
-                        backgroundColor:
-                            MaterialStateProperty.all(Colors.white)),
+                        backgroundColor: MaterialStateProperty.all(
+                            Theme.of(context).primaryColor)),
                     onPressed: () {
                       print('button pressed');
                       onbtnSubmitted();
                     },
                     child: Text(
                       'Add new Transaction',
-                      style: TextStyle(color: Theme.of(context).primaryColor),
+                      style: TextStyle(color: Colors.white),
                     )),
               ],
             ),

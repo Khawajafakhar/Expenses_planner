@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:expense_planner_app/models/Transactions.dart';
+import 'package:expense_planner_app/widgets/chart.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -36,41 +37,43 @@ class TransactionList extends StatelessWidget {
             ],
           )
         : Container(
-            height: 300,
-            child: ListView.builder(
-              itemBuilder: (ctx, indx) {
-                return Card(
-                    child: Row(
-                  children: [
-                    Container(
-                      decoration: BoxDecoration(
-                          shape: BoxShape.rectangle,
-                          border: Border.all(
-                              width: 2, color: Theme.of(context).primaryColor)),
-                      padding: EdgeInsets.all(20),
-                      margin: EdgeInsets.all(10),
-                      child: Text(
-                        '\$${transaction[indx].amount.toStringAsFixed(2)}',
-                        style: TextStyle(color: Theme.of(context).primaryColor),
-                      ),
+            height: 400,
+            child: Card(
+              elevation: 6,
+              child: ListView.builder(
+                itemBuilder: (ctx, indx) {
+                  return Padding(
+                    padding: EdgeInsets.symmetric(vertical: 8, horizontal: 5),
+                    child: Card(
+                      margin: EdgeInsets.symmetric(vertical: 2, horizontal: 4),
+                      elevation: 6,
+                      child: ListTile(
+                          leading: Padding(
+                            padding: EdgeInsets.all(4),
+                            child: CircleAvatar(
+                                backgroundColor: Theme.of(context).primaryColor,
+                                radius: 30,
+                                child: Padding(
+                                    padding: EdgeInsets.all(10),
+                                    child: FittedBox(
+                                        child: Text(
+                                      '\$${transaction[indx].amount.toStringAsFixed(2)}',
+                                      style: TextStyle(color: Colors.white),
+                                    )))),
+                          ),
+                          title: Text(
+                            transaction[indx].title,
+                            style: TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.bold),
+                          ),
+                          subtitle: Text(
+                            DateFormat.yMMMEd().format(transaction[indx].time),
+                          )),
                     ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          transaction[indx].title,
-                          style: Theme.of(context).textTheme.headline6,
-                        ),
-                        Text(
-                          DateFormat.yMMMEd().format(transaction[indx].time),
-                          style: TextStyle(color: Colors.grey),
-                        ),
-                      ],
-                    ),
-                  ],
-                ));
-              },
-              itemCount: transaction.length,
+                  );
+                },
+                itemCount: transaction.length,
+              ),
             ),
           );
   }

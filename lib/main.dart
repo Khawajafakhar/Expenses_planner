@@ -1,10 +1,11 @@
 // ignore_for_file: use_key_in_widget_constructors, prefer_const_constructors
 
+import 'package:expense_planner_app/widgets/chart.dart';
 import 'package:expense_planner_app/widgets/new_transaction.dart';
 import 'package:expense_planner_app/widgets/transactions_list.dart';
 import 'package:flutter/material.dart';
 
-import 'models/Transactions.dart';
+import '../models/Transactions.dart';
 
 void main() => runApp(MyApp());
 
@@ -32,6 +33,11 @@ class _MyAppState extends State<MyApp> {
     //     time: DateTime.now(),
     //     title: 'Underwear')
   ];
+  List<Transactions> get _recentTransactions{
+    return _transaction.where((tx) {
+    return tx.time.isAfter(DateTime.now().subtract(Duration(days: 7)));
+    }).toList();
+  }
 
   void _addTransaction(String title, double amount) {
     final newtx = Transactions(
@@ -79,36 +85,11 @@ class _MyAppState extends State<MyApp> {
                 },
                 icon: Icon(Icons.add,color: Colors.white,),)
           ]),
-          body: SingleChildScrollView(
-            child: Column(
-                //  mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  Container(
-                    width: double.infinity,
-                    // height: 100,
-                    color: Theme.of(context).primaryColor,
-                    alignment: Alignment.centerLeft,
-
-                    child: Card(
-                      //  color: Colors.black,
-                      elevation: 100,
-
-                      child: Text(
-                        'Container in the Column',
-                        style: TextStyle(color: Colors.black),
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 25,
-                  ),
-                  TransactionList(transaction: _transaction)
-                ]),
-          ),
+          body: Column(
+            children: [ Chart(_recentTransactions),
+              TransactionList(transaction:_transaction),
+            ],
+          ), 
           floatingActionButtonLocation:
               FloatingActionButtonLocation.centerFloat,
           floatingActionButton: FloatingActionButton(

@@ -33,9 +33,9 @@ class _MyAppState extends State<MyApp> {
     //     time: DateTime.now(),
     //     title: 'Underwear')
   ];
-  List<Transactions> get _recentTransactions{
+  List<Transactions> get _recentTransactions {
     return _transaction.where((tx) {
-    return tx.time.isAfter(DateTime.now().subtract(Duration(days: 7)));
+      return tx.time.isAfter(DateTime.now().subtract(Duration(days: 7)));
     }).toList();
   }
 
@@ -56,21 +56,31 @@ class _MyAppState extends State<MyApp> {
         });
   }
 
-void deleteTransaction(var id){
-    setState((){_transaction.removeWhere((element) => element.id==id);});
-    
+  void deleteTransaction(var id) {
+    setState(() {
+      _transaction.removeWhere((element) => element.id == id);
+    });
   }
+
   @override
   Widget build(BuildContext context) {
+    final appBar = AppBar(title: const Text('Expense Planner App'), actions: [
+      IconButton(
+        onPressed: () {
+          return startAddOperation(context);
+        },
+        icon: Icon(
+          Icons.add,
+          color: Colors.white,
+        ),
+      )
+    ]);
+
     return MaterialApp(
       theme: ThemeData(
           textTheme: TextTheme(
-              headline6: TextStyle(
-                  color: Colors.white 
-                
-                 // fontSize: 10,
-                  
-                  ),headline1: TextStyle(color: Colors.black)),
+              headline6: TextStyle(color: Colors.white),
+              headline1: TextStyle(color: Colors.black)),
           brightness: Brightness.light,
           primarySwatch: Colors.cyan,
           errorColor: Color.fromRGBO(220, 220, 220, 1),
@@ -78,31 +88,39 @@ void deleteTransaction(var id){
               elevation: 10, backgroundColor: Color.fromRGBO(139, 0, 139, 1)),
           appBarTheme: AppBarTheme(
             titleTextStyle: TextStyle(
-                color: Colors.white,
-                fontSize: 20,
-                fontWeight: FontWeight.bold),
+                color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
           )),
       home: Builder(builder: (BuildContext context) {
         return Scaffold(
-          appBar: AppBar(title: const Text('Expense Planner App'), actions: [
-            IconButton(
-                onPressed: () {
-                  return startAddOperation(context);
-                },
-                icon: Icon(Icons.add,color: Colors.white,),)
-          ]),
+          appBar: appBar,
           body: Column(
-            children: [ Chart(_recentTransactions),
-              TransactionList(transaction:_transaction,deleteTx: deleteTransaction ),
+            children: [
+              Container(
+                  height: (MediaQuery.of(context).size.height -
+                          appBar.preferredSize.height -
+                          MediaQuery.of(context).padding.top) *
+                      0.4,
+                  child: Chart(_recentTransactions)),
+              Container(
+                height: (MediaQuery.of(context).size.height -
+                        appBar.preferredSize.height -
+                        MediaQuery.of(context).padding.top) *
+                    0.6,
+                child: TransactionList(
+                    transaction: _transaction, deleteTx: deleteTransaction),
+              ),
             ],
-          ), 
+          ),
           floatingActionButtonLocation:
               FloatingActionButtonLocation.centerFloat,
           floatingActionButton: FloatingActionButton(
               onPressed: () {
                 return startAddOperation(context);
               },
-              child: Icon(Icons.add,color: Colors.white,)),
+              child: Icon(
+                Icons.add,
+                color: Colors.white,
+              )),
         );
       }),
     );

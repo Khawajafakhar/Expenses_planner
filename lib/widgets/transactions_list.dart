@@ -14,29 +14,34 @@ class TransactionList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return transaction.isEmpty
-        ? Column(
+        ? LayoutBuilder(builder: (context, constraints) {
+          return Column(
             // ignore: prefer_const_literals_to_create_immutables
             // crossAxisAlignment: CrossAxisAlignment.start,
 
             children: [
               Container(
                 width: double.infinity,
-                height: 250,
+                height: constraints.maxHeight*0.6,
                 child: Image(
                   alignment: Alignment.center,
                   fit: BoxFit.fitHeight,
                   image: AssetImage('assets/images/nodata.png'),
                 ),
               ),
-              SizedBox(
-                height: 30,
+              Container( height: constraints.maxHeight*0.1,
+                child: SizedBox(
+                  
+                ),
               ),
               Text(
                 'Please add some transactions',
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
               ),
             ],
-          )
+          );
+        })
+        
         : Container(
             height: 520,
             child: Card(

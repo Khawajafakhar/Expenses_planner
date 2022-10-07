@@ -33,6 +33,7 @@ class _MyAppState extends State<MyApp> {
     //     time: DateTime.now(),
     //     title: 'Underwear')
   ];
+  bool _switch = false;
   List<Transactions> get _recentTransactions {
     return _transaction.where((tx) {
       return tx.time.isAfter(DateTime.now().subtract(Duration(days: 7)));
@@ -64,6 +65,8 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
+    
+
     final appBar = AppBar(title: const Text('Expense Planner App'), actions: [
       IconButton(
         onPressed: () {
@@ -91,24 +94,53 @@ class _MyAppState extends State<MyApp> {
                 color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
           )),
       home: Builder(builder: (BuildContext context) {
+        final isLandScape =
+        MediaQuery.of(context).orientation == Orientation.landscape;
+        final txList = Container(
+          height: (MediaQuery.of(context).size.height -
+                  appBar.preferredSize.height -
+                  MediaQuery.of(context).padding.top) *
+              0.75,
+          child: TransactionList(
+              transaction: _transaction, deleteTx: deleteTransaction),
+        );
         return Scaffold(
           appBar: appBar,
           body: Column(
             children: [
-              Container(
-                  height: (MediaQuery.of(context).size.height -
-                          appBar.preferredSize.height -
-                          MediaQuery.of(context).padding.top) *
-                      0.4,
-                  child: Chart(_recentTransactions)),
-              Container(
-                height: (MediaQuery.of(context).size.height -
-                        appBar.preferredSize.height -
-                        MediaQuery.of(context).padding.top) *
-                    0.6,
-                child: TransactionList(
-                    transaction: _transaction, deleteTx: deleteTransaction),
-              ),
+              
+               if (isLandScape) Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Text('Show Chart'),
+                    Switch(
+                        value: _switch,
+                        onChanged: (val) {
+                          setState(() {
+                            _switch = val;
+                          });
+                        })
+                  ],
+                ), if (!isLandScape) 
+                Container(
+                    height: (MediaQuery.of(context).size.height -
+                            appBar.preferredSize.height -
+                            MediaQuery.of(context).padding.top) *
+                        0.25,
+                    child: Chart(_recentTransactions)),
+                    if (!isLandScape) txList,
+                    if (isLandScape)
+              _switch
+                  ? Container(
+                      height: (MediaQuery.of(context).size.height -
+                              appBar.preferredSize.height -
+                              MediaQuery.of(context).padding.top) *
+                          0.70,
+                      child: Chart(_recentTransactions))
+                  : txList,
+              
+                
+              
             ],
           ),
           floatingActionButtonLocation:

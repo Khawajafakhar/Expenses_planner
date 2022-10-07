@@ -39,9 +39,9 @@ class _MyAppState extends State<MyApp> {
     }).toList();
   }
 
-  void _addTransaction(String title, double amount) {
+  void _addTransaction(String title, double amount, DateTime date) {
     final newtx = Transactions(
-        id: DateTime.now(), amount: amount, time: DateTime.now(), title: title);
+        id: DateTime.now(), amount: amount, time: date, title: title);
     // TransactionList(transaction: _transaction);
     setState(() {
       _transaction.add(newtx);
@@ -56,6 +56,10 @@ class _MyAppState extends State<MyApp> {
         });
   }
 
+void deleteTransaction(var id){
+    setState((){_transaction.removeWhere((element) => element.id==id);});
+    
+  }
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -69,6 +73,7 @@ class _MyAppState extends State<MyApp> {
                   ),headline1: TextStyle(color: Colors.black)),
           brightness: Brightness.light,
           primarySwatch: Colors.cyan,
+          errorColor: Color.fromRGBO(220, 220, 220, 1),
           floatingActionButtonTheme: FloatingActionButtonThemeData(
               elevation: 10, backgroundColor: Color.fromRGBO(139, 0, 139, 1)),
           appBarTheme: AppBarTheme(
@@ -88,7 +93,7 @@ class _MyAppState extends State<MyApp> {
           ]),
           body: Column(
             children: [ Chart(_recentTransactions),
-              TransactionList(transaction:_transaction),
+              TransactionList(transaction:_transaction,deleteTx: deleteTransaction ),
             ],
           ), 
           floatingActionButtonLocation:

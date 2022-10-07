@@ -7,8 +7,11 @@ import 'package:intl/intl.dart';
 
 class TransactionList extends StatelessWidget {
   final List<Transactions> transaction;
+  final Function deleteTx;
 
-  TransactionList({required this.transaction});
+  TransactionList({required this.transaction,required this.deleteTx});
+
+  
 
   @override
   Widget build(BuildContext context) {
@@ -48,27 +51,35 @@ class TransactionList extends StatelessWidget {
                       margin: EdgeInsets.symmetric(vertical: 2, horizontal: 4),
                       elevation: 6,
                       child: ListTile(
-                          leading: Padding(
-                            padding: EdgeInsets.all(4),
-                            child: CircleAvatar(
-                                backgroundColor: Theme.of(context).primaryColor,
-                                radius: 30,
-                                child: Padding(
-                                    padding: EdgeInsets.all(10),
-                                    child: FittedBox(
-                                        child: Text(
-                                      '\$${transaction[indx].amount.toStringAsFixed(2)}',
-                                      style: TextStyle(color: Colors.white),
-                                    )))),
-                          ),
-                          title: Text(
-                            transaction[indx].title,
-                            style: TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.bold),
-                          ),
-                          subtitle: Text(
-                            DateFormat.yMMMEd().format(transaction[indx].time),
-                          )),
+                        leading: Padding(
+                          padding: EdgeInsets.all(4),
+                          child: CircleAvatar(
+                              backgroundColor: Theme.of(context).primaryColor,
+                              radius: 30,
+                              child: Padding(
+                                  padding: EdgeInsets.all(10),
+                                  child: FittedBox(
+                                      child: Text(
+                                    '\$${transaction[indx].amount.toStringAsFixed(2)}',
+                                    style: TextStyle(color: Colors.white),
+                                  )))),
+                        ),
+                        title: Text(
+                          transaction[indx].title,
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold),
+                        ),
+                        subtitle: Text(
+                          DateFormat.yMMMEd().format(transaction[indx].time),
+                        ),
+                        trailing: IconButton(
+                          icon: Icon(
+                              Icons.delete,
+                              color: Theme.of(context).errorColor,
+                            ),
+                            onPressed: () => deleteTx(transaction[indx].id),
+                            ),
+                      ),
                     ),
                   );
                 },

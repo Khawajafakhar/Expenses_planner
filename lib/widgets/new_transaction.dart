@@ -10,7 +10,7 @@ import 'package:intl/intl.dart';
 
 class NewTransactions extends StatefulWidget {
   final Function addfx;
-  
+
   NewTransactions(this.addfx);
 
   @override
@@ -22,34 +22,36 @@ class _NewTransactionsState extends State<NewTransactions> {
   void onbtnSubmitted() {
     final String titlein = titleinput.text;
     final double amountin = double.parse(amountinput.text);
+    final DateTime? date = _selectedDate;
 
-    if (titlein.isEmpty || amountin <= 0) {
+    if (titlein.isEmpty || amountin <= 0 || _selectedDate == null ) {
       return;
     }
 
-    widget.addfx(titlein, amountin);
+    widget.addfx(titlein, amountin, date);
 
     // Navigator.of(context).pop();
   }
 
   void _presentdatepicker() {
-    showDatePicker(context: context,
-        initialDate: DateTime.now(),
-        firstDate: DateTime(2022),
-        lastDate: DateTime.now()).then((value) {
-          if(value != null) {
-            setState(() {
-            _selectedDate = value;
-              
-            });
-          }
-        
+    showDatePicker(
+            context: context,
+            initialDate: DateTime.now(),
+            firstDate: DateTime(2022),
+            lastDate: DateTime.now())
+        .then((value) {
+      if (value != null) {
+        setState(() {
+          _selectedDate = value;
         });
+      }
+    });
   }
 
   final titleinput = TextEditingController();
 
   final amountinput = TextEditingController();
+
 
   @override
   Widget build(BuildContext context) {
@@ -81,8 +83,11 @@ class _NewTransactionsState extends State<NewTransactions> {
               children: [
                 Padding(
                     padding: EdgeInsets.only(left: 10),
-                    child:
-                        Text(_selectedDate!= null ? DateFormat.yMd().format(_selectedDate!) : 'No Date!', style: TextStyle(color: Colors.grey))),
+                    child: Text(
+                        _selectedDate != null
+                            ? DateFormat.yMd().format(_selectedDate!)
+                            : 'No Date!',
+                        style: TextStyle(color: Colors.grey))),
                 TextButton(
                     onPressed: _presentdatepicker,
                     child: Text(

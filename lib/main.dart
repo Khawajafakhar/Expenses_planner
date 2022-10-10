@@ -63,10 +63,49 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
+  List<Widget> landscapeMode(
+      MediaQueryData mediaQuery, AppBar appBar, Widget txList) {
+    return [
+      Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          Text('Show Chart'),
+          Switch(
+              value: _switch,
+              onChanged: (val) {
+                setState(() {
+                  _switch = val;
+                });
+              })
+        ],
+      ),
+      _switch
+          ? Container(
+              height: (mediaQuery.size.height -
+                      appBar.preferredSize.height -
+                      mediaQuery.padding.top) *
+                  0.70,
+              child: Chart(_recentTransactions))
+          : txList
+    ];
+  }
+
+  List<Widget> portraitMode(
+      MediaQueryData mediaQuery, AppBar appBar, Widget txList) {
+    return [
+      Container(
+          height: (mediaQuery.size.height -
+                  appBar.preferredSize.height -
+                  mediaQuery.padding.top) *
+              0.25,
+          child: Chart(_recentTransactions)),
+      txList
+    ];
+  }
+  
+
   @override
   Widget build(BuildContext context) {
-    
-
     final appBar = AppBar(title: const Text('Expense Planner App'), actions: [
       IconButton(
         onPressed: () {
@@ -94,12 +133,12 @@ class _MyAppState extends State<MyApp> {
                 color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
           )),
       home: Builder(builder: (BuildContext context) {
-        final isLandScape =
-        MediaQuery.of(context).orientation == Orientation.landscape;
+        final mediaQuery = MediaQuery.of(context);
+        final isLandScape = mediaQuery.orientation == Orientation.landscape;
         final txList = Container(
-          height: (MediaQuery.of(context).size.height -
+          height: (mediaQuery.size.height -
                   appBar.preferredSize.height -
-                  MediaQuery.of(context).padding.top) *
+                  mediaQuery.padding.top) *
               0.75,
           child: TransactionList(
               transaction: _transaction, deleteTx: deleteTransaction),
@@ -108,39 +147,8 @@ class _MyAppState extends State<MyApp> {
           appBar: appBar,
           body: Column(
             children: [
-              
-               if (isLandScape) Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Text('Show Chart'),
-                    Switch(
-                        value: _switch,
-                        onChanged: (val) {
-                          setState(() {
-                            _switch = val;
-                          });
-                        })
-                  ],
-                ), if (!isLandScape) 
-                Container(
-                    height: (MediaQuery.of(context).size.height -
-                            appBar.preferredSize.height -
-                            MediaQuery.of(context).padding.top) *
-                        0.25,
-                    child: Chart(_recentTransactions)),
-                    if (!isLandScape) txList,
-                    if (isLandScape)
-              _switch
-                  ? Container(
-                      height: (MediaQuery.of(context).size.height -
-                              appBar.preferredSize.height -
-                              MediaQuery.of(context).padding.top) *
-                          0.70,
-                      child: Chart(_recentTransactions))
-                  : txList,
-              
-                
-              
+              if (isLandScape) ...landscapeMode(mediaQuery, appBar, txList),
+              if (!isLandScape) ...portraitMode(mediaQuery, appBar, txList),
             ],
           ),
           floatingActionButtonLocation:
